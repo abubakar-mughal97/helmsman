@@ -20,11 +20,20 @@ RUN apt-get update && apt-get install -y \
     ros-jazzy-robot-localization \
     ros-jazzy-ros-gz \ 
     ros-jazzy-teleop-twist-keyboard \
+    ros-jazzy-xacro \
+    ros-jazzy-joint-state-publisher-gui \
     && rm -rf /var/lib/apt/lists/*
 
+# --- Non-root user (UID 1000 matches the host user; 'ubuntu' ships with the base image) ---
+RUN apt-get update && apt-get install -y sudo \
+    && echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
+    && rm -rf /var/lib/apt/lists/*
+
+USER ubuntu
+
+
+RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc \
+    && echo "[ -f /ws/install/setup.bash ] && source /ws/install/setup.bash" >> ~/.bashrc
+
 WORKDIR /ws
-
-RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc \
-    && echo "[ -f /ws/install/setup.bash ] && source /ws/install/setup.bash" >> /root/.bashrc
-
 CMD ["bash"]

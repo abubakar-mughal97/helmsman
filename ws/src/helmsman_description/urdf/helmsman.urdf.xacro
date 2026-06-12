@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="helmsman">
+
+    <!-- ================= Properties ================= -->
+    <xacro:property name="body_length" value="0.75"/>
+    <xacro:property name="body_width" value="0.50"/>
+    <xacro:property name="body_height" value="0.20"/>
+    <xacro:property name="body_mass" value="25.0"/>
+
+    <xacro:property name="wheel_radius" value="0.085"/>
+    <xacro:property name="ground_clearance" value="0.04"/>
+
+    <!-- ================= Materials (as macros, inlined per visual) ================= -->
+    <xacro:macro name="mat_charcoal">
+        <material name="charcoal">
+            <color rgba="0.18 0.18 0.18 1.0"/>
+        </material>
+    </xacro:macro>
+    <xacro:macro name="mat_light_gray">
+        <material name="light_gray">
+            <color rgba="0.65 0.65 0.62 1.0"/>
+        </material>
+    </xacro:macro>
+    <xacro:macro name="mat_dark_gray">
+        <material name="dark_gray">
+            <color rgba="0.30 0.30 0.30 1.0"/>
+        </material>
+    </xacro:macro>
+    <xacro:macro name="mat_teal">
+        <material name="teal">
+            <color rgba="0.11 0.62 0.46 1.0"/>
+        </material>
+    </xacro:macro>
+    <xacro:macro name="mat_orange">
+        <material name="orange">
+            <color rgba="0.86 0.50 0.0 1.0"/>
+        </material>
+    </xacro:macro>
+
+    <!-- ================= Inertia macros ================= -->
+    <xacro:macro name="box_inertia" params="m x y z">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${(m/12.0)*(y*y+z*z)}" ixy="0" ixz="0" iyy="${(m/12.0)*(x*x+z*z)}" iyz="0" izz="${(m/12.0)*(x*x+y*y)}"/>
+        </inertial>
+    </xacro:macro>
+
+    <!-- ================= base_footprint ================= -->
+    <link name="base_footprint"/>
+
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 ${ground_clearance + body_height/2}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ================= base_link: the chassis ================= -->
+    <link name="base_link">
+
+        <!-- main body -->
+        <visual>
+            <geometry>
+                <box size="${body_length} ${body_width} ${body_height}"/>
+            </geometry>
+            <xacro:mat_charcoal/>
+        </visual>
+
+        <!-- deck plate: slightly larger, thin, sits on top -->
+        <visual>
+            <origin xyz="0 0 ${body_height/2 + 0.01}"/>
+            <geometry>
+                <box size="${body_length + 0.03} ${body_width + 0.03} 0.02"/>
+            </geometry>
+            <xacro:mat_light_gray/>
+        </visual>
+
+        <!-- underbody skirt: narrower, hangs below -->
+        <visual>
+            <origin xyz="0 0 ${-body_height/2 - 0.015}"/>
+            <geometry>
+                <box size="${body_length - 0.05} ${body_width - 0.04} 0.03"/>
+            </geometry>
+            <xacro:mat_dark_gray/>
+        </visual>
+
+        <!-- LED strips, left and right flanks -->
+        <visual>
+            <origin xyz="0 ${ body_width/2 + 0.005} 0.02"/>
+            <geometry>
+                <box size="${body_length} 0.01 0.02"/>
+            </geometry>
+            <xacro:mat_teal/>
+        </visual>
+        <visual>
+            <origin xyz="0 ${-body_width/2 - 0.005} 0.02"/>
+            <geometry>
+                <box size="${body_length} 0.01 0.02"/>
+            </geometry>
+            <xacro:mat_teal/>
+        </visual>
+
+        <!-- bumper bars, front and rear -->
+        <visual>
+            <origin xyz="${ body_length/2 + 0.02} 0 -0.02"/>
+            <geometry>
+                <box size="0.04 ${body_width - 0.04} 0.12"/>
+            </geometry>
+            <xacro:mat_orange/>
+        </visual>
+        <visual>
+            <origin xyz="${-body_length/2 - 0.02} 0 -0.02"/>
+            <geometry>
+                <box size="0.04 ${body_width - 0.04} 0.12"/>
+            </geometry>
+            <xacro:mat_orange/>
+        </visual>
+
+        <!-- ONE simple collision for the whole chassis -->
+        <collision>
+            <geometry>
+                <box size="${body_length + 0.08} ${body_width} ${body_height + 0.05}"/>
+            </geometry>
+        </collision>
+
+        <xacro:box_inertia m="${body_mass}" x="${body_length}" y="${body_width}" z="${body_height}"/>
+    </link>
+
+</robot>
