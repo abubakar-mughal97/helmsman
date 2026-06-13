@@ -42,6 +42,7 @@
     <!-- ================= 2D Lidar sensor ================= -->
     <gazebo reference="lidar_link">
         <sensor name="lidar" type="gpu_lidar">
+            <gz_frame_id>lidar_link</gz_frame_id>
             <topic>scan</topic>
             <update_rate>10</update_rate>
             <always_on>true</always_on>
