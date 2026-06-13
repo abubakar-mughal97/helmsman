@@ -65,6 +65,11 @@
         </sensor>
     </gazebo>
 
+    <!-- Publish joint angles (e.g. spinning wheels) out of Gazebo -->
+    <gazebo>
+        <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher"/>
+    </gazebo>
+
 
 
 </robot>
