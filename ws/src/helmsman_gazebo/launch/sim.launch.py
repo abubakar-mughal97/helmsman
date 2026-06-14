@@ -1,11 +1,15 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, ExecuteProcess
+from launch.actions import (
+    IncludeLaunchDescription,
+    DeclareLaunchArgument,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
-from launch.substitutions import Command
+from launch.substitutions import Command, LaunchConfiguration
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -18,6 +22,8 @@ def generate_launch_description():
     bridge_config = os.path.join(pkg_gazebo, "config", "bridge.yaml")
 
     robot_description = ParameterValue(Command(["xacro ", xacro_path]), value_type=str)
+
+    rviz_config = os.path.join(pkg_gazebo, "rviz", "helmsman.rviz")
 
     # 1. Start Gazebo with our world
     gz_sim = IncludeLaunchDescription(
@@ -51,4 +57,20 @@ def generate_launch_description():
         output="screen",
     )
 
-    return LaunchDescription([gz_sim, robot_state_publisher, spawn, bridge])
+    use_rviz = LaunchConfiguration("rviz")
+    declare_rviz = DeclareLaunchArgument(
+        "rviz", default_value="true", description="Launch RViz with saved config"
+    )
+
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        arguments=["-d", rviz_config],
+        parameters=[{"use_sim_time": True}],
+        condition=IfCondition(use_rviz),
+        output="screen",
+    )
+
+    return LaunchDescription(
+        [declare_rviz, gz_sim, robot_state_publisher, spawn, bridge, rviz]
+    )
