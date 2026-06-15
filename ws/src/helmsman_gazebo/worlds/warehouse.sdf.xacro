@@ -203,13 +203,43 @@
 
         <!-- A couple of distinguishing crates in the open staging area -->
         <xacro:crate name="c_4" x="8" y="8" size="1.0"/>
-        <xacro:crate name="c_5" x="14" y="0" size="0.7"/>
+        <xacro:crate name="c_5" x="10" y="0" size="0.7"/>
 
+        <!-- ============ Fuel models: realistic shelves ============ -->
         <include>
-            <uri>
-https://fuel.gazebosim.org/1.0/MovAi/models/shelf
-            </uri>
+            <name>fuel_shelf_1</name>
+            <pose>-5 -3 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
         </include>
+        <include>
+            <name>fuel_shelf_2</name>
+            <pose>20 6 0 0 0 1.5708</pose>
+            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+        </include>
+        <include>
+            <name>fuel_shelf_3</name>
+            <pose>15 -1 0 0 0 1.5708</pose>
+            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+        </include>
+
+        <!-- ============ Fuel models: pallets ============ -->
+        <include>
+            <name>fuel_pallet_1</name>
+            <pose>5 7 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
+        </include>
+        <include>
+            <name>fuel_pallet_2</name>
+            <pose>6 7 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
+        </include>
+        <include>
+            <name>fuel_pallet_3</name>
+            <pose>-9 -7 0 0 0 0.78</pose>
+            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
+        </include>
+
+
 
     </world>
 </sdf>

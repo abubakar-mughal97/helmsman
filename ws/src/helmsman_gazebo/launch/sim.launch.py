@@ -19,7 +19,7 @@ def generate_launch_description():
     pkg_desc = get_package_share_directory("helmsman_description")
     pkg_ros_gz = get_package_share_directory("ros_gz_sim")
 
-    world_path = os.path.join(pkg_gazebo, "worlds", "warehouse.sdf")
+    world_path = os.path.join(pkg_gazebo, "worlds", "empty_helmsman.sdf")
     xacro_path = os.path.join(pkg_desc, "urdf", "helmsman.urdf.xacro")
     bridge_config = os.path.join(pkg_gazebo, "config", "bridge.yaml")
 
