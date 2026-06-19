@@ -40,7 +40,7 @@ amcl:
     sigma_hit: 0.2
 
     # --- Start pose: the map origin = where mapping began ---
-    set_initial_pose: true
+    set_initial_pose: false
     initial_pose:
       x: 0.0
       y: 0.0

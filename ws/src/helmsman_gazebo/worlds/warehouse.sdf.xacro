@@ -79,11 +79,11 @@
             </model>
         </xacro:macro>
 
-        <!-- A shelf unit: a box obstacle -->
-        <xacro:macro name="shelf" params="name x y length:=6 depth:=1">
+        <!-- A shelf unit: a box obstacle (now with optional yaw) -->
+        <xacro:macro name="shelf" params="name x y length:=6 depth:=1 yaw:=0">
             <model name="${name}">
                 <static>true</static>
-                <pose>${x} ${y} 0.75 0 0 0</pose>
+                <pose>${x} ${y} 0.75 0 0 ${yaw}</pose>
                 <link name="link">
                     <collision name="c">
                         <geometry>
@@ -138,10 +138,10 @@
         </xacro:macro>
 
         <!-- A crate: small box -->
-        <xacro:macro name="crate" params="name x y size:=0.8">
+        <xacro:macro name="crate" params="name x y size:=0.8 yaw:=0">
             <model name="${name}">
                 <static>true</static>
-                <pose>${x} ${y} ${size/2} 0 0 0</pose>
+                <pose>${x} ${y} ${size/2} 0 0 ${yaw}</pose>
                 <link name="link">
                     <collision name="c">
                         <geometry>
@@ -165,7 +165,7 @@
             </model>
         </xacro:macro>
 
-        <!-- ============ PERIMETER (L-shape) ============ -->
+        <!-- ============ PERIMETER (L-shape — kept; it's globally distinctive) ============ -->
         <!-- Main hall: x from -25 to 25, y from -5 to 12. South wing: x from -25 to 0, y from -17 to -5. -->
 
         <xacro:wall name="w_north" x="0" y="12" length="50"/>
@@ -175,71 +175,73 @@
         <xacro:wall name="w_wing_s" x="-12.5" y="-17" length="25"/>
         <xacro:wall name="w_west" x="-25" y="-2.5" length="29" yaw="${pi/2}"/>
 
-        <!-- ============ STORAGE AISLES (west) ============ -->
-        <!-- 5 shelf rows along x, spaced 3m in y -->
-        <xacro:shelf name="shelf_1" x="-17" y="9" length="12"/>
-        <xacro:shelf name="shelf_2" x="-17" y="6" length="12"/>
-        <xacro:shelf name="shelf_3" x="-17" y="3" length="12"/>
-        <xacro:shelf name="shelf_4" x="-17" y="0" length="12"/>
-        <xacro:shelf name="shelf_5" x="-17" y="-3" length="12"/>
+        <!-- ============ STORAGE AISLES (west) — DELIBERATELY IRREGULAR ============ -->
+        <!-- Varied lengths, staggered x, uneven y-spacing so no two aisles scan alike -->
+        <xacro:shelf name="shelf_1" x="-18.0" y="9.5"  length="14" depth="1.0"/>
+        <xacro:shelf name="shelf_2" x="-16.5" y="6.0"  length="10" depth="1.2"/>
+        <xacro:shelf name="shelf_3" x="-19.0" y="2.0"  length="8"  depth="1.0"/>
+        <xacro:shelf name="shelf_4" x="-15.5" y="-1.0" length="13" depth="1.0"/>
+        <xacro:shelf name="shelf_5" x="-18.0" y="-3.8" length="9"  depth="1.2"/>
+        <!-- A perpendicular shelf to break the all-parallel pattern -->
+        <xacro:shelf name="shelf_6" x="-9.0" y="3.5" length="6" depth="1.0" yaw="${pi/2}"/>
 
-        <!-- ============ LOADING DOCK (east wall, with bay gaps) ============ -->
-        <!-- Short wall stubs creating bay openings, plus dock-side shelves -->
-        <xacro:shelf name="dock_1" x="21" y="9" length="3" depth="1.5"/>
-        <xacro:shelf name="dock_2" x="21" y="1" length="3" depth="1.5"/>
-        <xacro:shelf name="dock_3" x="21" y="-3" length="3" depth="1.5"/>
+        <!-- ============ LOADING DOCK (east) — varied bay widths ============ -->
+        <xacro:shelf name="dock_1" x="21.5" y="9.0"  length="3.0" depth="1.5"/>
+        <xacro:shelf name="dock_2" x="21.0" y="2.0"  length="4.0" depth="1.5"/>
+        <xacro:shelf name="dock_3" x="21.5" y="-3.5" length="2.5" depth="1.5"/>
 
-        <!-- ============ SOUTH WING (pillar grid + crates) ============ -->
-        <xacro:pillar name="p_1" x="-20" y="-8"/>
-        <xacro:pillar name="p_2" x="-13" y="-8"/>
-        <xacro:pillar name="p_3" x="-6" y="-8"/>
-        <xacro:pillar name="p_4" x="-20" y="-14"/>
-        <xacro:pillar name="p_5" x="-13" y="-14"/>
-        <xacro:pillar name="p_6" x="-6" y="-14"/>
+        <!-- ============ SOUTH WING — IRREGULAR pillar scatter + crates ============ -->
+        <xacro:pillar name="p_1" x="-21.0" y="-7.5"/>
+        <xacro:pillar name="p_2" x="-14.5" y="-9.2"/>
+        <xacro:pillar name="p_3" x="-6.5"  y="-7.8"/>
+        <xacro:pillar name="p_4" x="-19.0" y="-14.5"/>
+        <xacro:pillar name="p_5" x="-11.0" y="-12.8"/>
+        <xacro:pillar name="p_6" x="-3.5"  y="-15.0"/>
 
-        <xacro:crate name="c_1" x="-9" y="-11"/>
-        <xacro:crate name="c_2" x="-16" y="-11" size="1.0"/>
-        <xacro:crate name="c_3" x="-22" y="-11" size="0.6"/>
+        <xacro:crate name="c_1" x="-9.0"  y="-11.0" size="0.8"/>
+        <xacro:crate name="c_2" x="-16.0" y="-11.5" size="1.0" yaw="0.5"/>
+        <xacro:crate name="c_3" x="-22.5" y="-11.0" size="0.6"/>
+        <xacro:crate name="c_4" x="7.0"   y="8.0"   size="1.0"/>
+        <xacro:crate name="c_5" x="12.0"  y="6.0"   size="0.7" yaw="0.8"/>
+        <xacro:crate name="c_6" x="-2.0"  y="9.0"   size="0.9"/>
 
-        <!-- A couple of distinguishing crates in the open staging area -->
-        <xacro:crate name="c_4" x="8" y="8" size="1.0"/>
-        <xacro:crate name="c_5" x="10" y="0" size="0.7"/>
+        <!-- ============ DISTINCTIVE FUEL LANDMARKS ============ -->
+        <!-- Spread across regions so each area has a unique lidar fingerprint -->
 
-        <!-- ============ Fuel models: realistic shelves ============ -->
+        <!-- NE corner: an office desk = unmistakable, anchors the whole north-east -->
         <include>
-            <name>fuel_shelf_1</name>
-            <pose>-5 -3 0 0 0 0</pose>
-            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
-        </include>
-        <include>
-            <name>fuel_shelf_2</name>
-            <pose>20 6 0 0 0 1.5708</pose>
-            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
-        </include>
-        <include>
-            <name>fuel_shelf_3</name>
-            <pose>15 -1 0 0 0 1.5708</pose>
-            <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+            <name>office_desk</name>
+            <pose>22 10.5 0 0 0 -1.5708</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Abdurrahman/models/Office Desk</uri>
         </include>
 
-        <!-- ============ Fuel models: pallets ============ -->
+        <!-- Center-east: a detailed AWS warehouse shelf -->
         <include>
-            <name>fuel_pallet_1</name>
-            <pose>5 7 0 0 0 0</pose>
-            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
-        </include>
-        <include>
-            <name>fuel_pallet_2</name>
-            <pose>6 7 0 0 0 0</pose>
-            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
-        </include>
-        <include>
-            <name>fuel_pallet_3</name>
-            <pose>-9 -7 0 0 0 0.78</pose>
-            <uri>https://fuel.gazebosim.org/1.0/ctrazziwp/models/pallet</uri>
+            <name>aws_shelf_d</name>
+            <pose>8 -2 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Abdurrahman/models/aws_robomaker_warehouse_ShelfD_01</uri>
         </include>
 
+        <!-- Near the dock: a pallet jack -->
+        <include>
+            <name>pallet_jack</name>
+            <pose>16 5 0 0 0 1.2</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Abdurrahman/models/aws_robomaker_warehouse_PalletJackB_01</uri>
+        </include>
 
+        <!-- Staging area: a mobile pallet box -->
+        <include>
+            <name>pallet_box</name>
+            <pose>3 6 0 0 0 0.4</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Abdurrahman/models/pallet_box_mobile</uri>
+        </include>
+
+        <!-- South wing: a clutter pile — gives the wing its own signature -->
+        <include>
+            <name>clutter_c</name>
+            <pose>-8 -15 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Abdurrahman/models/aws_robomaker_warehouse_ClutteringC_01</uri>
+        </include>
 
     </world>
 </sdf>

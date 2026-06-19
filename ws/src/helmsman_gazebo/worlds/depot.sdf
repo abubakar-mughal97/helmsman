@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+    <world name="warehouse">
+        <include>
+            <name>clutter_c</name>
+            <pose>-8 -15 0 0 0 0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/Aiosama/worlds/tugbot_depot</uri>
+        </include>
+    </world>
+</sdf>
