@@ -2,6 +2,9 @@
 
 Welcome to the **Helmsman** workspace! This is a complete ROS 2 development environment designed to simulate a differential drive mobile robot (**Helmsman**) in Gazebo Sim, configure topic bridges, execute hold-to-drive teleoperation, run SLAM mapping, and execute AMCL localization within a warehouse environment.
 
+<img width="647" height="496" alt="image" src="https://github.com/user-attachments/assets/f861dae1-f179-41e6-99df-38bed9058dac" />
+
+
 This document serves as your **project guide** and **personal developer notes**.
 
 ---
