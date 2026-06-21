@@ -13,8 +13,8 @@ amcl:
 
     set_initial_pose: true  # otherwise takes the map origin as initial pose
     initial_pose:
-      x: 0.0
-      y: 0.0
+      x: 1.0
+      y: 1.0
       z: 0.0
       yaw: 0.0
 
@@ -25,7 +25,7 @@ amcl:
     laser_model_type: "likelihood_field"
     laser_max_range: 12.0       # matches lidar <max>
     laser_min_range: 0.15       # matches lidar <min>
-    max_beams: 60               # beams subsampled per scan for matching
+    max_beams: 120               # beams subsampled per scan for matching
     laser_likelihood_max_dist: 2.0
 
     # --- Particle filter size ---
@@ -33,8 +33,8 @@ amcl:
     max_particles: 2000
 
     # --- Filter updates only after the robot moves this much ---
-    update_min_d: 0.25          # metres
-    update_min_a: 0.2           # radians
+    update_min_d: 0.1          # metres
+    update_min_a: 0.05           # radians
     resample_interval: 1
 
     # --- Motion noise (diff-drive odometry alphas) ---
