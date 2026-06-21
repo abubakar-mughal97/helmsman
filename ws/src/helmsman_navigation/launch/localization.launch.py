@@ -1,4 +1,5 @@
 import os
+
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -36,7 +37,7 @@ def generate_launch_description():
         output="screen",
         parameters=[amcl_params, {"use_sim_time": use_sim_time}],
     )
-
+    
     lifecycle_manager = Node(
         package="nav2_lifecycle_manager",
         executable="lifecycle_manager",
@@ -50,5 +51,32 @@ def generate_launch_description():
             }
         ],
     )
+    
+    odom_publisher = Node(
+        package="robot_localization",
+        executable="ekf_node",
+        name="ekf_filter_node",
+        parameters=[{
+            "use_sim_time": True,
+            "odom_frame": "odom",
+            "base_link_frame": "base_footprint",
+            "world_frame": "odom",
+            "publish_tf": True,
 
-    return LaunchDescription([declare_sim_time, map_server, amcl, lifecycle_manager])
+            "odom0": "/odom",
+            "odom0_config": [
+                True, True, False,
+                False, False, True,
+                False, False, False,
+                False, False, False,
+                False, False, False
+            ]
+        }]
+    )
+    return LaunchDescription([
+        declare_sim_time, 
+        map_server, 
+        amcl, 
+        lifecycle_manager,
+        odom_publisher,
+    ])

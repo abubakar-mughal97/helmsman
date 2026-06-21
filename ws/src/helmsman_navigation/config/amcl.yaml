@@ -4,7 +4,19 @@ amcl:
     base_frame_id: "base_footprint"
     odom_frame_id: "odom"
     global_frame_id: "map"
-    scan_topic: "scan"
+    scan_topic: scan
+
+   # --- Publish the map -> odom correction ---
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    save_pose_rate: 0.5
+
+    set_initial_pose: true  # otherwise takes the map origin as initial pose
+    initial_pose:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      yaw: 0.0
 
     # --- Motion model: differential drive ---
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
@@ -39,19 +51,7 @@ amcl:
     z_short: 0.05
     sigma_hit: 0.2
 
-    # --- Start pose: the map origin = where mapping began ---
-    set_initial_pose: false
-    initial_pose:
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      yaw: 0.0
-
-    # --- Publish the map -> odom correction ---
-    tf_broadcast: true
-    transform_tolerance: 1.0
-    save_pose_rate: 0.5
-
+ 
 map_server:
   ros__parameters:
     yaml_filename: ""   # set from the launch file (package-relative path)
